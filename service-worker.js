@@ -4,7 +4,7 @@
 // ØYGARDEN MARINE - SERVICE WORKER
 // ========================================
 
-const CACHE_NAME = "oygarden-marine-v1";
+const CACHE_NAME = "oygarden-marine-v2";
 
 // Filer som lagres lokalt
 const APP_FILES = [
