@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" width="512" height="512">
+
+    <rect width="150" height="150" rx="32" fill="#081c2b"></rect>
+
+    <circle cx="105" cy="38" r="15" fill="#fbbf24"></circle>
+
+    <text x="75" y="91" font-family="Arial, sans-serif" font-size="78" font-weight="bold" text-anchor="middle" fill="#d8ed4b">Ø</text>
+
+    <g fill="none" stroke="#38bdf8" stroke-width="4" stroke-linecap="round">
+
+        <path d="M24 103 Q36 95 48 103
+                 T72 103 T96 103 T120 103"></path>
+
+        <path d="M24 114 Q36 106 48 114
+                 T72 114 T96 114 T120 114"></path>
+
+    </g>
+
+    <text x="75" y="137" font-family="Arial, sans-serif" font-size="10" font-weight="bold" letter-spacing="2" text-anchor="middle" fill="#ffffff">MARINE</text>
+
+</svg>

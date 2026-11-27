@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ØYGARDEN MARINE</title>
+
+<!-- Nettstedets ikon -->
+<link rel="icon" type="image/svg+xml" href="image/marine-icon.svg">
+
+<!-- PWA-konfigurasjon -->
+<link rel="manifest" href="manifest.json">
+
+<!-- Ikon for iPhone -->
+<link rel="apple-touch-icon" href="image/apple-touch-icon.png">
+
+<!-- Temafarge -->
+<meta name="theme-color" content="#134261">
+
+<link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Toppmeny -->
+    <header class="site-header">
+        <div class="container">
+            <h1>ØYGARDEN MARINE</h1>
+            <p>Din lokale vær- og havoversikt</p>
+            <!-- Ikoner i toppmenyen -->
+<div class="header-icons">
+
+    <a class="header-icon" href="#forecast-section">
+        <svg viewBox="0 0 24 24">
+            <circle cx="8" cy="7" r="4"/>
+            <path d="M8 1V0 M2 7H0 M14 7H16"/>
+            <path d="M5 20H19A4 4 0 0 0 19 12
+                     A6 6 0 0 0 8 13A4 4 0 0 0 5 20Z"/>
+        </svg>
+        <span>Værvarsel</span>
+    </a>
+
+    <a class="header-icon" href="#wind-section">
+        <svg viewBox="0 0 24 24">
+            <path d="M2 8H17A3 3 0 1 0 14 5"/>
+            <path d="M2 12H21"/>
+            <path d="M2 16H14A3 3 0 1 1 11 19"/>
+        </svg>
+        <span>Vindforhold</span>
+    </a>
+
+    <a class="header-icon" href="#marine-section">
+        <svg viewBox="0 0 24 24">
+            <path d="M2 6Q5 2 9 6T16 6T23 6"/>
+            <path d="M2 12Q5 8 9 12T16 12T23 12"/>
+            <path d="M2 18Q5 14 9 18T16 18T23 18"/>
+        </svg>
+        <span>Havforhold</span>
+    </a>
+<!-- Navigasjon til bølgeprognosen -->
+<a class="header-icon" href="#wave-section">
+    <svg viewBox="0 0 24 24">
+        <path d="M3 3V21H21"/>
+        <path d="M6 15L10 9L14 13L21 5"/>
+        <path d="M16 5H21V10"/>
+    </svg>
+    <span>Bølgeprognose</span>
+</a>
+
+</div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Velg sted -->
+        <section class="location-section">
+            <h2>Velg sted</h2>
+
+            <label for="location-select">Sted i Øygarden</label>
+
+            <select id="location-select">
+                <option value="steinsland">Steinsland</option>
+                <option value="straume">Straume</option>
+                <option value="rong">Rong</option>
+                <option value="hellesoy">Hellesøy</option>
+                <option value="telavag">Telavåg</option>
+                <option value="klokkarvik">Klokkarvik</option>
+                <option value="misje">Misje</option>
+            </select>
+
+            <button type="button" id="refresh-btn">
+                Oppdater værdata
+            </button>
+
+            <p id="weather-status" role="status">
+                Venter på værdata...
+            </p>
+<!-- API-status og siste oppdatering -->
+<div class="api-info">
+
+    <span id="api-status" class="api-status">
+        <span class="status-dot"></span>
+        Venter på API
+    </span>
+
+    <p id="last-updated">
+        Sist oppdatert: –
+    </p>
+
+</div>
+
+        </section>
+
+        <!-- Dagens vær -->
+        <section class="weather-section" id="wind-section">
+            <h2>Dagens vær</h2>
+
+            <div class="weather-grid">
+
+                <article class="weather-card">
+                    <h3>🌡️ Lufttemperatur</h3>
+                    <p id="temperature">– °C</p>
+                </article>
+
+                <article class="weather-card">
+                    <h3>🥶 Føles som</h3>
+                    
+                    <p id="feels-like">– °C</p>
+                </article>
+
+                <article class="weather-card">
+                    <h3>💨 Vindhastighet</h3>
+                    <p id="wind-speed">– m/s</p>
+                </article>
+
+                <article class="weather-card">
+                    <h3>🧭 Vindretning</h3>
+                    <p id="wind-direction">–</p>
+                    <!-- Kompass for vindretning -->
+<div class="compass">
+
+    <span class="compass-north">N</span>
+    <span class="compass-east">Ø</span>
+    <span class="compass-south">S</span>
+    <span class="compass-west">V</span>
+
+    <div id="wind-needle" class="compass-needle"></div>
+
+    <div class="compass-center"></div>
+
+</div>
+                </article>
+
+                <article class="weather-card">
+                    <h3>🌧️ Nedbør</h3>
+                    <p id="precipitation">– mm</p>
+                </article>
+
+                <!-- Lufttrykksmåler -->
+<article class="weather-card">
+    <h3>⏱️ Lufttrykk</h3>
+
+    <p id="pressure">– hPa</p>
+
+    <canvas
+        id="pressure-gauge"
+        width="240"
+        height="205"
+        aria-label="Grafisk lufttrykksmåler">
+        Lufttrykksmåler
+    </canvas>
+
+</article>
+                <article class="weather-card">
+                    <h3>💧 Luftfuktighet</h3>
+                    <p id="humidity">– %</p>
+                </article>
+
+                <article class="weather-card">
+                    <h3>🌡️ Duggpunkt</h3>
+                    <p id="dew-point">– °C</p>
+                </article>
+
+                <article class="weather-card">
+                    <h3>💨 Vindkast</h3>
+                    <p id="wind-gusts">– m/s</p>
+                </article>
+
+                <article class="weather-card">
+                    <h3>👁️ Sikt</h3>
+                    <p id="visibility">– km</p>
+                </article>
+
+                <article class="weather-card">
+                    <h3>🌞 UV-indeks</h3>
+                    <p id="uv-index">–</p>
+                </article>
+        </section>
+
+        <!-- Havforhold -->
+        <section class="marine-section" id="marine-section">
+            <h2>Havforhold</h2>
+ 
+            <div class="weather-grid">
+
+                <article class="weather-card">
+                    <h3>🌊 Bølgehøyde</h3>
+                    <p id="wave-height">– m</p>
+                </article>
+
+                <article class="weather-card">
+                    <h3>🧭 Bølgeretning</h3>
+                    <p id="wave-direction">–</p>
+                </article>
+
+                <article class="weather-card">
+                    <h3>⏱️ Bølgeperiode</h3>
+                    <p id="wave-period">– s</p>
+                </article>
+
+                <article class="weather-card">
+                    <h3>🌡️ Havtemperatur</h3>
+                    <p id="sea-temperature">– °C</p>
+                </article>
+  
+
+
+            </div>
+        </section>
+
+        <!-- Timevarsel -->
+        <section class="forecast-section" id="forecast-section">
+    <h2>Timevarsel</h2>
+            <div id="hourly-forecast" class="forecast-grid"></div>
+        </section>
+
+        <!-- Ukesvarsel -->
+        <section class="forecast-section">
+            <h2>7-dagers varsel</h2>
+            <div id="daily-forecast" class="forecast-grid"></div>
+        </section>
+
+        <!-- Bølgeprognose -->
+        <section class="chart-section" id="wave-section">
+            <h2>Bølgeprognose</h2>
+            <!-- Interaktivt bølgediagram -->
+<div class="chart-wrapper">
+
+    <canvas id="wave-chart" width="900" height="350">
+        Bølgeprognose
+    </canvas>
+
+    <div id="wave-tooltip" class="wave-tooltip"></div>
+
+</div>
+        </section>
+
+    </main>
+
+    <!-- Bunntekst -->
+    <footer class="site-footer">
+        <p>© 2026 Øygarden Marine</p>
+        <p>Datakilde: Open-Meteo</p>
+        <p>Prognosene er veiledende og skal ikke brukes til navigasjon.</p>
+    </footer>
+
+<!-- Knapp for å gå tilbake til toppen -->
+<button id="back-to-top"
+        type="button"
+        aria-label="Til toppen"
+        title="Til toppen">
+
+    <svg viewBox="0 0 24 24">
+        <path d="M12 20V4"/>
+        <path d="M5 11L12 4L19 11"/>
+    </svg>
+
+</button>
+</body>
+</html>

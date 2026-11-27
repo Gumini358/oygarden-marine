@@ -1,0 +1,763 @@
+/* ========================================
+   ØYGARDEN MARINE
+   Vær- og havoversikt
+======================================== */
+
+/* Fargepalett */
+:root {
+    --background: #071827;
+    --surface: #124469;
+    --card: #355c7a;
+    --accent: #d3e358;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: #27465e;
+}
+
+/* Grunnleggende stil */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #244b6c, #6b90a8);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+.container {
+    width: 92%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Toppmeny */
+.site-header {
+    background: linear-gradient(120deg, #071827, #0e7490);
+    padding: 50px 20px;
+    border-bottom: 1px solid var(--accent);
+}
+
+.site-header h1 {
+    margin: 0;
+    font-size: clamp(28px, 4vw, 48px);
+    letter-spacing: 3px;
+    color: var(--accent);
+}
+
+.site-header p {
+    color: #cbd5e1;
+    font-size: 17px;
+}
+
+/* Hovedinnhold */
+main {
+    padding: 30px 0;
+}
+
+section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+h2 {
+    margin-top: 0;
+    color: var(--accent);
+    font-size: 24px;
+}
+
+/* Valg av sted */
+.location-section label {
+    display: block;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+select {
+    min-width: 200px;
+    padding: 13px 18px;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Oppdateringsknapp */
+button {
+    padding: 13px 22px;
+    background: var(--accent);
+    color: #225683;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #7dd3fc;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+button:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+}
+
+/* Status for værdata */
+#weather-status {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* Værkort */
+.weather-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+}
+
+.weather-card {
+    background: linear-gradient(145deg, #15354d, #4d79a0);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 25px;
+    transition: transform 0.2s ease,
+                border-color 0.2s ease;
+}
+
+.weather-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+}
+
+.weather-card h3 {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 0;
+}
+
+.weather-card p {
+    color: var(--text);
+    font-size: 30px;
+    font-weight: bold;
+    margin: 15px 0 0;
+}
+
+/* Timevarsel og ukesvarsel */
+.forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 15px;
+}
+
+.forecast-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+}
+
+.forecast-card h3 {
+    color: var(--accent);
+    font-size: 15px;
+}
+
+.forecast-card p {
+    margin: 10px 0;
+}
+
+/* Bølgeprognose */
+#wave-chart {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #071827;
+    border-radius: 12px;
+}
+
+/* Bunntekst */
+.site-footer {
+    padding: 30px 20px;
+    text-align: center;
+    background: #071827;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* Mobilvisning */
+@media (max-width: 600px) {
+    .site-header {
+        padding: 30px 10px;
+    }
+
+    section {
+        padding: 16px;
+    }
+
+    .weather-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .weather-card {
+        padding: 15px;
+    }
+
+    .weather-card p {
+        font-size: 24px;
+    }
+
+    select,
+    #refresh-btn {
+        width: 100%;
+        margin-bottom: 12px;
+    }
+}
+
+/* Redusert bevegelse */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none;
+    }
+
+    .weather-card:hover {
+        transform: none;
+    }
+}
+
+/* Farger for værvarsel */
+
+.forecast-card .temp-max {
+    color: #ffb870;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.forecast-card .temp-min {
+    color: #7dd3fc;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.forecast-card .rain-value {
+    color: #38bdf8;
+    font-size: 14px;
+}
+
+.forecast-card h3 {
+    color: #d8ed4b;
+}
+
+/* Værikoner i værvarselet */
+
+.weather-icon {
+    font-size: 42px;
+    margin: 12px 0;
+    text-align: center;
+}
+
+/* API-status og siste oppdatering */
+
+.api-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+}
+
+.api-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #94a3b8;
+}
+
+.api-status.online .status-dot {
+    background: #22c55e;
+    box-shadow: 0 0 10px #22c55e;
+}
+
+.api-status.partial .status-dot {
+    background: #f59e0b;
+    box-shadow: 0 0 10px #f59e0b;
+}
+
+.api-status.offline .status-dot {
+    background: #ef4444;
+    box-shadow: 0 0 10px #ef4444;
+}
+
+#last-updated {
+    font-size: 14px;
+    color: #b8d5e5;
+}
+
+/* Farger for soloppgang og solnedgang */
+
+#sunrise {
+    color: #fbbf24;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+#sunset {
+    color: #fb923c;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+/* Værkort for dag og natt */
+
+.forecast-card.day-card {
+    background: linear-gradient(
+        145deg,
+        #365e7c,
+        #23465e
+    );
+    border-top: 3px solid #fbbf24;
+}
+
+.forecast-card.night-card {
+    background: linear-gradient(
+        145deg,
+        #182c46,
+        #0f1d32
+    );
+    border-top: 3px solid #818cf8;
+}
+
+.forecast-card {
+    transition: transform 0.3s ease;
+}
+
+.forecast-card:hover {
+    transform: translateY(-5px);
+}
+
+/* ========================================
+   KOMPASS FOR VINDRETNING
+   ======================================== */
+
+.compass {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 20px auto 10px;
+    border: 2px solid #52798d;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        #173f59,
+        #081c2b
+    );
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+}
+
+/* Himmelretninger */
+
+.compass span {
+    position: absolute;
+    font-size: 12px;
+    font-weight: 700;
+    color: #d8ed4b;
+}
+
+.compass-north {
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #f87171 !important;
+}
+
+.compass-south {
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.compass-east {
+    right: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.compass-west {
+    left: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Kompassnål */
+
+.compass-needle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 18px;
+    height: 76px;
+    background: linear-gradient(
+        to bottom,
+        #d8ed4b 50%,
+        #52798d 50%
+    );
+    clip-path: polygon(
+        50% 0%,
+        100% 50%,
+        50% 100%,
+        0% 50%
+    );
+    transform: translate(-50%, -50%) rotate(0deg);
+    transition: transform 0.8s ease;
+}
+
+/* Midtpunkt */
+
+.compass-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    background: #ffffff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Interaktiv informasjon i bølgediagrammet */
+
+.chart-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.wave-tooltip {
+    position: absolute;
+    display: none;
+    background: #102f45;
+    color: #d8ed4b;
+    border: 1px solid #38bdf8;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+#wave-chart {
+    cursor: crosshair;
+}
+
+/* ========================================
+   PANORAMABILDE I TOPPMENYEN
+   ======================================== */
+
+.site-header {
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(5, 20, 35, 0.35),
+            rgba(5, 20, 35, 0.05)
+        ),
+        url("image/marine-waves.jpeg");
+
+    background-size: cover;
+    background-position: center 55%;
+    background-repeat: no-repeat;
+
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+
+    border-bottom: 2px solid #d8ed4b;
+}
+
+.site-header .container {
+    width: 100%;
+}
+
+.site-header h1 {
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+}
+
+.site-header p {
+    color: #ffffff;
+    font-size: 18px;
+    text-shadow: 0 2px 8px #000000;
+}
+
+/* ========================================
+   RESPONSIVT DESIGN
+   ======================================== */
+
+/* Nettbrett */
+@media (max-width: 900px) {
+
+    .site-header {
+        min-height: 260px;
+    }
+
+    .weather-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .forecast-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+/* Mobiltelefon */
+@media (max-width: 600px) {
+
+    .site-header {
+        min-height: 220px;
+        background-position: center;
+    }
+
+    .site-header h1 {
+        font-size: 28px;
+    }
+
+    .site-header p {
+        font-size: 14px;
+    }
+
+    .weather-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .forecast-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .api-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .weather-icon {
+        font-size: 32px;
+    }
+}
+
+/* ========================================
+   IKONER I TOPPMENYEN
+   ======================================== */
+
+.header-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.header-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    width: 125px;
+    padding: 15px 10px;
+
+    background: rgba(8, 28, 43, 0.45);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+
+    transition: transform 0.3s ease,
+                background 0.3s ease;
+}
+
+.header-icon svg {
+    width: 32px;
+    height: 32px;
+    fill: none;
+    stroke: #d8ed4b;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.header-icon span {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.header-icon:hover {
+    transform: translateY(-4px);
+    background: rgba(8, 28, 43, 0.8);
+}
+
+/* Tilpasser ikonene til mobiltelefon */
+
+@media (max-width: 600px) {
+
+    .header-icons {
+        gap: 8px;
+    }
+
+    .header-icon {
+        flex: 1;
+        width: auto;
+        min-width: 0;
+        padding: 12px 5px;
+    }
+
+    .header-icon svg {
+        width: 26px;
+        height: 26px;
+    }
+
+    .header-icon span {
+        font-size: 11px;
+    }
+}
+
+/* Myk navigasjon mellom seksjonene */
+
+html {
+    scroll-behavior: smooth;
+}
+
+.header-icon {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+section {
+    scroll-margin-top: 20px;
+}
+
+/* Navigasjonsikoner på mobiltelefon */
+
+@media (max-width: 600px) {
+
+    .header-icons {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .header-icon {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+/* ========================================
+   TIL TOPPEN
+   ======================================== */
+
+#back-to-top {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+
+    width: 50px;
+    height: 50px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #d8ed4b;
+    border: none;
+    border-radius: 50%;
+
+    cursor: pointer;
+    z-index: 1000;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+#back-to-top svg {
+    width: 25px;
+    height: 25px;
+    fill: none;
+    stroke: #081c2b;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+#back-to-top:hover {
+    transform: translateY(-5px);
+}
+
+/* Skjuler knappen øverst på siden */
+
+#back-to-top {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease,
+                visibility 0.3s ease,
+                transform 0.3s ease;
+}
+
+#back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ========================================
+   LUFTTRYKKSMÅLER
+   ======================================== */
+
+#pressure-gauge {
+    display: block;
+    width: 100%;
+    max-width: 240px;
+    height: auto;
+    margin: 15px auto 0;
+}
+
+#pressure {
+    color: #d8ed4b;
+    font-weight: 700;
+}
+
+/* Informasjon om marine prognoser */
+
+.marine-note {
+    color: #b8d5e5;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+}
